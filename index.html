@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Storymaker Pro | Next-Gen Storytelling</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700&family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.9.1/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <style>
+        :root {
+            --primary-color: #00b4d8;
+            --secondary-color: #90e0ef;
+            --accent-color: #ff6b6b;
+            --background-color: #03045e;
+            --text-color: #252926;
+            --text-color2: #a6ff00;
+            --card-background: rgba(2, 62, 138, 0.7);
+            --input-background: rgba(144, 224, 239, 0.1);
+            --success-color: #06d6a0;
+            --error-color: #ef476f;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            color: var(--text-color2);
+            background-color: var(--background-color);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        #background-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 20px;
+            position: relative;
+            z-index: 1;
+        }
+
+        header {
+            padding: 60px 0;
+            text-align: center;
+            position: relative;
+        }
+
+        header h1 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 4rem;
+            font-weight: 700;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            letter-spacing: 4px;
+            color: var(--primary-color);
+            text-shadow: 0 0 10px var(--primary-color), 0 0 20px var(--primary-color), 0 0 30px var(--primary-color);
+            animation: glow 2s ease-in-out infinite alternate;
+        }
+
+        @keyframes glow {
+            from {
+                text-shadow: 0 0 10px var(--primary-color), 0 0 20px var(--primary-color), 0 0 30px var(--primary-color);
+            }
+            to {
+                text-shadow: 0 0 20px var(--primary-color), 0 0 30px var(--primary-color), 0 0 40px var(--primary-color);
+            }
+        }
+
+        header p {
+            font-size: 1.2rem;
+            max-width: 800px;
+            margin: 0 auto;
+            opacity: 0.9;
+        }
+
+        main {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 40px;
+            padding: 60px 0;
+        }
+
+        .section {
+            flex: 1;
+            min-width: 300px;
+            background-color: var(--card-background);
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            padding: 40px;
+            transition: all 0.5s ease;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .section:hover {
+            transform: translateY(-10px) scale(1.02);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+        }
+
+        h2 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 2.5rem;
+            margin-bottom: 30px;
+            color: var(--primary-color);
+            position: relative;
+            padding-bottom: 10px;
+        }
+
+        h2::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            width: 50px;
+            height: 3px;
+            background-color: var(--accent-color);
+            box-shadow: 0 0 10px var(--accent-color);
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: var(--secondary-color);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        input, select, textarea {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid var(--secondary-color);
+            border-radius: 10px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            background-color: var(--input-background);
+            color: var(--text-color);
+        }
+
+        input:focus, select:focus, textarea:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(0, 180, 216, 0.3);
+        }
+
+        button {
+            display: inline-block;
+            padding: 15px 30px;
+            background-color: var(--accent-color);
+            color: var(--text-color);
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            font-size: 1.2rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        button::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: conic-gradient(from 90deg at 50% 50%, transparent 0deg, var(--primary-color) 360deg);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        button:hover::before {
+            opacity: 1;
+            animation: rotate 4s linear infinite;
+        }
+
+        @keyframes rotate {
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        button span {
+            position: relative;
+            z-index: 1;
+        }
+
+        #story {
+            white-space: pre-wrap;
+            line-height: 1.8;
+            font-size: 1.1rem;
+            color: var(--text-color2);
+        }
+
+        #story-section {
+            display: none;
+        }
+
+        #loader {
+            display: none;
+            text-align: center;
+            margin-top: 30px;
+        }
+
+        .loader-spinner {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            border: 5px solid var(--secondary-color);
+            border-top: 5px solid var(--primary-color);
+            animation: spin 1s linear infinite, glow 2s ease-in-out infinite alternate;
+            margin: 20px auto;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 15px 20px;
+            border-radius: 10px;
+            color: var(--text-color);
+            font-weight: 600;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            z-index: 1000;
+        }
+
+        .notification.success {
+            background-color: var(--success-color);
+        }
+
+        .notification.error {
+            background-color: var(--error-color);
+        }
+
+        @media (max-width: 768px) {
+            header h1 {
+                font-size: 3rem;
+            }
+
+            main {
+                flex-direction: column;
+            }
+
+            .section {
+                min-width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <canvas id="background-canvas"></canvas>
+    <div class="container">
+        <header>
+            <h1>AI Storymaker Pro</h1>
+            <p>Experience the future of storymaking with our revolutionary AI-powered platform</p>
+        </header>
+
+        <main>
+            <section class="section" id="input-section">
+                <h2>Story Configuration</h2>
+                <form id="story-form">
+                    <div class="form-group">
+                        <label for="genre">Genre</label>
+                        <select id="genre" required>
+                            <option value="">Select a genre</option>
+                            <option value="Adventure">Adventure</option>
+                            <option value="Fantasy">Fantasy</option>
+                            <option value="Sci-Fi">Sci-Fi</option>
+                            <option value="Mystery">Mystery</option>
+                            <option value="Romance">Romance</option>
+                            <option value="Horror">Horror</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="title">Title</label>
+                        <input type="text" id="title" placeholder="e.g., The Quantum Paradox" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="main-character">Main Character</label>
+                        <input type="text" id="main-character" placeholder="e.g., Dr. Aria Chen" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="length">Length</label>
+                        <select id="length" required>
+                            <option value="">Select story length</option>
+                            <option value="Short">Short</option>
+                            <option value="Medium">Medium</option>
+                            <option value="Long">Long</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="setting">Setting</label>
+                        <input type="text" id="setting" placeholder="e.g., A dystopian megacity in 2150" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="theme">Theme</label>
+                        <input type="text" id="theme" placeholder="e.g., The ethics of AI" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="start">Starting Point (optional)</label>
+                        <textarea id="start" placeholder="e.g., In a world where dreams are commodities..."></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="num-characters">Number of Characters</label>
+                        <input type="number" id="num-characters" min="1" max="10" value="3" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="cast-names">Cast Names (comma-separated)</label>
+                        <input type="text" id="cast-names" placeholder="e.g., Dr. Aria Chen, AI-X, Commander Walsh" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="cast-roles">Cast Roles (comma-separated)</label>
+                        <input type="text" id="cast-roles" placeholder="e.g., Scientist, Rogue AI, Military Leader" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="ending">Ending Type</label>
+                        <select id="ending" required>
+                            <option value="">Select an ending type</option>
+                            <option value="Happy">Happy</option>
+                            <option value="Sad">Sad</option>
+                            <option value="Cliffhanger">Cliffhanger</option>
+                            <option value="Twist">Twist</option>
+                            <option value="Open-ended">Open-ended</option>
+                        </select>
+                    </div>
+
+                    <button type="submit"><span>Generate Story</span></button>
+                </form>
+            </section>
+
+            <section class="section" id="story-section">
+                <h2 id="story-title"></h2>
+                <div id="story"></div>
+                <button id="speak-button"><span>Speak Story</span></button>
+            </section>
+        </main>
+
+        <div id="loader">
+            <div class="loader-spinner"></div>
+            <p>Crafting your epic tale ... Please wait.</p>
+        </div>
+
+        <div id="notification" class="notification"></div>
+    </div>
+
+    <script>
+        function generatePrompt(inputs) {
+            return `
+As a master storyteller, craft an engaging ${inputs.length} ${inputs.genre} story titled "${inputs.title}".
+
+Main Character: ${inputs.mainCharacter}
+Setting: ${inputs.setting}
+Theme: ${inputs.theme}
+Number of Characters: ${inputs.numCharacters}
+Cast: ${inputs.castNames} playing roles of ${inputs.castRoles}
+Ending Type: ${inputs.ending}
+
+Guidelines:
+1. Begin with a captivating opening that sets the tone for the ${inputs.genre} genre.
+2. Develop the characters, especially ${inputs.mainCharacter}, giving them depth and relatable qualities.
+3. Incorporate the theme of ${inputs.theme} throughout the narrative.
+4. Create a vivid depiction of the ${inputs.setting}.
+5. Introduce conflicts and challenges that align with the ${inputs.genre} genre.
+6. Maintain a balance between dialogue, action, and descriptive turns to maintain reader interest.
+7. Conclude with a ${inputs.ending.toLowerCase()} ending that resonates with the overall theme and genre.
+
+Additional Notes:
+- Language: English
+- Starting Point (if provided): ${inputs.start}
+
+Remember to maintain consistency in tone, pacing, and character development throughout the story.
+            `;
+        }
+
+        async function generateStory(event) {
+            event.preventDefault();
+
+            const inputs = {
+                genre: document.getElementById('genre').value,
+                title: document.getElementById('title').value,
+                mainCharacter: document.getElementById('main-character').value,
+                length: document.getElementById('length').value,
+                language: 'English',
+                setting: document.getElementById('setting').value,
+                theme: document.getElementById('theme').value,
+                start: document.getElementById('start').value,
+                numCharacters: document.getElementById('num-characters').value,
+                castNames: document.getElementById('cast-names').value,
+                castRoles: document.getElementById('cast-roles').value,
+                ending: document.getElementById('ending').value
+            };
+
+            const prompt = generatePrompt(inputs);
+
+            document.getElementById('loader').style.display = 'block';
+            document.getElementById('story-section').style.display = 'none';
+
+            try {
+                const params = new URLSearchParams({
+                    model: 'Qwen/Qwen2-72B-Instruct',
+                    message: prompt
+                });
+
+                const response = await fetch(`https://abhaykoul-api.hf.space/api/llm?${params}`, {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                });
+
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+
+                const data = await response.json();
+                const markdownStory = convertToMarkdown(data.response);
+                document.getElementById('story-title').textContent = inputs.title;
+                document.getElementById('story').innerHTML = markdownStory;
+                document.getElementById('story-section').style.display = 'block';
+            } catch (error) {
+                console.error('Error:', error);
+                alert('An error occurred while generating the story. Please try again.');
+            } finally {
+                document.getElementById('loader').style.display = 'none';
+            }
+        }
+
+        function convertToMarkdown(text) {
+            // Convert newlines to Markdown line breaks
+            text = text.replace(/\n/g, '  \n');
+            // Add other Markdown conversions if needed
+            return text;
+        }
+
+        async function speakStory() {
+            const storyText = document.getElementById('story').textContent;
+            const chunks = storyText.match(/.{1,200}/g); // Split text into chunks of 200 characters
+
+            for (const chunk of chunks) {
+                const params = new URLSearchParams({
+                    voice: 'Brian',
+                    text: chunk
+                });
+
+                const response = await fetch(`https://api.streamelements.com/kappa/v2/speech?${params}`);
+
+                if (!response.ok) {
+                    console.error('Error:', response.statusText);
+                    alert('An error occurred while speaking the story. Please try again.');
+                    return;
+                }
+
+                const audio = await response.blob();
+                const audioUrl = URL.createObjectURL(audio);
+                const audioElement = new Audio(audioUrl);
+                audioElement.play();
+
+                // Wait for the audio to finish playing before moving to the next chunk
+                await new Promise(resolve => audioElement.onended = resolve);
+            }
+        }
+
+        document.getElementById('story-form').addEventListener('submit', generateStory);
+        document.getElementById('speak-button').addEventListener('click', speakStory);
+    </script>
+</body>
+</html>
