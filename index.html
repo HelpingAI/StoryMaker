@@ -3,22 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AI Storymaker Pro | Next-Gen Storytelling</title>
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700&family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
+    <title>Kathakar Pro | Bharat's Next-Gen Storytelling</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&family=Rajdhani:wght@500;700&family=Hind:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.9.1/gsap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script disable-devtool-auto src="https://cdn.jsdelivr.net/npm/disable-devtool"></script>
     <style>
         :root {
-            --primary-color: #00b4d8;
-            --secondary-color: #90e0ef;
-            --accent-color: #ff6b6b;
-            --background-color: #03045e;
-            --text-color: #252926;
-            --text-color2: #a6ff00;
-            --card-background: rgba(2, 62, 138, 0.7);
-            --input-background: rgba(144, 224, 239, 0.1);
-            --success-color: #06d6a0;
-            --error-color: #ef476f;
+            --primary-color: #FF9933; /* Saffron */
+            --secondary-color: #138808; /* Green */
+            --accent-color: #000080; /* Blue */
+            --background-color: #FFF5E6; /* Off-white */
+            --text-color: #333;
+            --card-background: #FFF;
+            --card-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
         }
 
         * {
@@ -28,11 +26,13 @@
         }
 
         body {
-            font-family: 'Roboto', sans-serif;
-            color: var(--text-color2);
+            font-family: 'Poppins', sans-serif;
             background-color: var(--background-color);
+            color: var(--text-color);
             line-height: 1.6;
             overflow-x: hidden;
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><circle cx="50" cy="50" r="40" fill="none" stroke="%23FF9933" stroke-width="0.5" /></svg>');
+            background-size: 50px 50px;
         }
 
         #background-canvas {
@@ -56,27 +56,40 @@
             padding: 60px 0;
             text-align: center;
             position: relative;
+            background: linear-gradient(135deg, #FF9933, #FFFFFF, #138808);
+            border-radius: 30px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+            margin-bottom: 30px;
+            border: 5px solid #000080;
+            overflow: hidden;
+        }
+
+        header::before {
+            content: "";
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><path d="M50 0 L100 50 L50 100 L0 50 Z" fill="none" stroke="%23000080" stroke-width="1" /></svg>') repeat;
+            opacity: 0.1;
+            animation: rotate 60s linear infinite;
+        }
+
+        @keyframes rotate {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
         }
 
         header h1 {
-            font-family: 'Orbitron', sans-serif;
+            font-family: 'Rajdhani', sans-serif;
             font-size: 4rem;
             font-weight: 700;
             margin-bottom: 20px;
             text-transform: uppercase;
             letter-spacing: 4px;
-            color: var(--primary-color);
-            text-shadow: 0 0 10px var(--primary-color), 0 0 20px var(--primary-color), 0 0 30px var(--primary-color);
-            animation: glow 2s ease-in-out infinite alternate;
-        }
-
-        @keyframes glow {
-            from {
-                text-shadow: 0 0 10px var(--primary-color), 0 0 20px var(--primary-color), 0 0 30px var(--primary-color);
-            }
-            to {
-                text-shadow: 0 0 20px var(--primary-color), 0 0 30px var(--primary-color), 0 0 40px var(--primary-color);
-            }
+            color: var(--accent-color);
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
         }
 
         header p {
@@ -84,6 +97,7 @@
             max-width: 800px;
             margin: 0 auto;
             opacity: 0.9;
+            color: var(--accent-color);
         }
 
         main {
@@ -98,23 +112,22 @@
             min-width: 300px;
             background-color: var(--card-background);
             border-radius: 20px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            box-shadow: var(--card-shadow);
             padding: 40px;
             transition: all 0.5s ease;
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            border: 3px solid var(--primary-color);
         }
 
         .section:hover {
             transform: translateY(-10px) scale(1.02);
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
         }
 
         h2 {
-            font-family: 'Orbitron', sans-serif;
+            font-family: 'Hind', sans-serif;
             font-size: 2.5rem;
             margin-bottom: 30px;
-            color: var(--primary-color);
+            color: var(--accent-color);
             position: relative;
             padding-bottom: 10px;
         }
@@ -126,8 +139,8 @@
             bottom: 0;
             width: 50px;
             height: 3px;
-            background-color: var(--accent-color);
-            box-shadow: 0 0 10px var(--accent-color);
+            background-color: var(--primary-color);
+            box-shadow: 0 0 10px var(--primary-color);
         }
 
         .form-group {
@@ -138,7 +151,7 @@
             display: block;
             margin-bottom: 8px;
             font-weight: 500;
-            color: var(--secondary-color);
+            color: var(--accent-color);
             text-transform: uppercase;
             letter-spacing: 1px;
         }
@@ -150,26 +163,26 @@
             border-radius: 10px;
             font-size: 1rem;
             transition: all 0.3s ease;
-            background-color: var(--input-background);
+            background-color: rgba(255, 255, 255, 0.9);
             color: var(--text-color);
         }
 
         input:focus, select:focus, textarea:focus {
             outline: none;
             border-color: var(--primary-color);
-            box-shadow: 0 0 0 3px rgba(0, 180, 216, 0.3);
+            box-shadow: 0 0 0 3px rgba(255, 153, 51, 0.3);
         }
 
         button {
             display: inline-block;
             padding: 15px 30px;
             background-color: var(--accent-color);
-            color: var(--text-color);
+            color: #FFF;
             border: none;
             border-radius: 50px;
             cursor: pointer;
             font-size: 1.2rem;
-            font-weight: 700;
+            font-weight: 600;
             text-transform: uppercase;
             letter-spacing: 2px;
             transition: all 0.3s ease;
@@ -194,12 +207,6 @@
             animation: rotate 4s linear infinite;
         }
 
-        @keyframes rotate {
-            100% {
-                transform: rotate(360deg);
-            }
-        }
-
         button span {
             position: relative;
             z-index: 1;
@@ -209,7 +216,7 @@
             white-space: pre-wrap;
             line-height: 1.8;
             font-size: 1.1rem;
-            color: var(--text-color2);
+            color: var(--text-color);
         }
 
         #story-section {
@@ -237,25 +244,13 @@
             100% { transform: rotate(360deg); }
         }
 
-        .notification {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            padding: 15px 20px;
-            border-radius: 10px;
-            color: var(--text-color);
-            font-weight: 600;
-            opacity: 0;
-            transition: opacity 0.3s ease;
-            z-index: 1000;
-        }
-
-        .notification.success {
-            background-color: var(--success-color);
-        }
-
-        .notification.error {
-            background-color: var(--error-color);
+        @keyframes glow {
+            from {
+                box-shadow: 0 0 5px var(--primary-color), 0 0 10px var(--primary-color);
+            }
+            to {
+                box-shadow: 0 0 10px var(--primary-color), 0 0 20px var(--primary-color);
+            }
         }
 
         @media (max-width: 768px) {
@@ -277,8 +272,8 @@
     <canvas id="background-canvas"></canvas>
     <div class="container">
         <header>
-            <h1>AI Storymaker Pro</h1>
-            <p>Experience the future of storymaking with our revolutionary AI-powered platform</p>
+            <h1>Kathakar Pro</h1>
+            <p>Experience Bharat's revolutionary AI-powered storytelling platform</p>
         </header>
 
         <main>
@@ -286,7 +281,7 @@
                 <h2>Story Configuration</h2>
                 <form id="story-form">
                     <div class="form-group">
-                        <label for="genre">Genre</label>
+                        <label for="genre">Genre (e.g., Adventure, Romance, Mythology)</label>
                         <select id="genre" required>
                             <option value="">Select a genre</option>
                             <option value="Adventure">Adventure</option>
@@ -295,6 +290,7 @@
                             <option value="Mystery">Mystery</option>
                             <option value="Romance">Romance</option>
                             <option value="Horror">Horror</option>
+                            <option value="Mythology">Mythology</option>
                         </select>
                     </div>
 
@@ -367,44 +363,32 @@
             <section class="section" id="story-section">
                 <h2 id="story-title"></h2>
                 <div id="story"></div>
-                <button id="speak-button"><span>Speak Story</span></button>
+                <button id="speak-button"><span>Narrate Story</span></button>
             </section>
         </main>
 
         <div id="loader">
             <div class="loader-spinner"></div>
-            <p>Crafting your epic tale ... Please wait.</p>
+            <p>Crafting your epic tale... Please wait.</p>
         </div>
-
-        <div id="notification" class="notification"></div>
     </div>
 
     <script>
         function generatePrompt(inputs) {
             return `
-As a master storyteller, craft an engaging ${inputs.length} ${inputs.genre} story titled "${inputs.title}".
+Craft a compelling ${inputs.length} ${inputs.genre} story titled "${inputs.title}" set in ${inputs.setting}.
 
-Main Character: ${inputs.mainCharacter}
-Setting: ${inputs.setting}
-Theme: ${inputs.theme}
-Number of Characters: ${inputs.numCharacters}
-Cast: ${inputs.castNames} playing roles of ${inputs.castRoles}
-Ending Type: ${inputs.ending}
+The story should revolve around ${inputs.mainCharacter} and explore the theme of ${inputs.theme}.  Include at least ${inputs.numCharacters} characters: ${inputs.castNames} playing the roles of ${inputs.castRoles}.  The story should have a ${inputs.ending} ending.
 
-Guidelines:
-1. Begin with a captivating opening that sets the tone for the ${inputs.genre} genre.
-2. Develop the characters, especially ${inputs.mainCharacter}, giving them depth and relatable qualities.
-3. Incorporate the theme of ${inputs.theme} throughout the narrative.
-4. Create a vivid depiction of the ${inputs.setting}.
-5. Introduce conflicts and challenges that align with the ${inputs.genre} genre.
-6. Maintain a balance between dialogue, action, and descriptive turns to maintain reader interest.
-7. Conclude with a ${inputs.ending.toLowerCase()} ending that resonates with the overall theme and genre.
+Optional starting point: ${inputs.start}
 
-Additional Notes:
-- Language: English
-- Starting Point (if provided): ${inputs.start}
+Focus on:
+* Vivid descriptions of the setting and characters.
+* Engaging dialogue and action.
+* A well-paced plot with compelling conflict and resolution.
+* A strong narrative voice that draws the reader into the story.
 
-Remember to maintain consistency in tone, pacing, and character development throughout the story.
+Ensure the story is consistent in tone, pacing, and character development.
             `;
         }
 
@@ -416,7 +400,6 @@ Remember to maintain consistency in tone, pacing, and character development thro
                 title: document.getElementById('title').value,
                 mainCharacter: document.getElementById('main-character').value,
                 length: document.getElementById('length').value,
-                language: 'English',
                 setting: document.getElementById('setting').value,
                 theme: document.getElementById('theme').value,
                 start: document.getElementById('start').value,
@@ -433,15 +416,15 @@ Remember to maintain consistency in tone, pacing, and character development thro
 
             try {
                 const params = new URLSearchParams({
-                    model: 'Qwen/Qwen2-72B-Instruct',
-                    message: prompt
+                    q: prompt,
+                    model: 'gpt-4o-mini'
                 });
 
-                const response = await fetch(`https://abhaykoul-api.hf.space/api/llm?${params}`, {
+                const response = await fetch(`https://abhaykoul-api.hf.space/api/chat?${params}`, {
                     method: 'GET',
                     headers: {
-                        'Content-Type': 'application/json',
-                    },
+                        'accept': 'application/json'
+                    }
                 });
 
                 if (!response.ok) {
@@ -449,9 +432,9 @@ Remember to maintain consistency in tone, pacing, and character development thro
                 }
 
                 const data = await response.json();
-                const markdownStory = convertToMarkdown(data.response);
+                const story = data.response; // Assuming the response is directly the story
                 document.getElementById('story-title').textContent = inputs.title;
-                document.getElementById('story').innerHTML = markdownStory;
+                document.getElementById('story').innerHTML = story;
                 document.getElementById('story-section').style.display = 'block';
             } catch (error) {
                 console.error('Error:', error);
@@ -461,20 +444,13 @@ Remember to maintain consistency in tone, pacing, and character development thro
             }
         }
 
-        function convertToMarkdown(text) {
-            // Convert newlines to Markdown line breaks
-            text = text.replace(/\n/g, '  \n');
-            // Add other Markdown conversions if needed
-            return text;
-        }
-
         async function speakStory() {
             const storyText = document.getElementById('story').textContent;
             const chunks = storyText.match(/.{1,200}/g); // Split text into chunks of 200 characters
 
             for (const chunk of chunks) {
                 const params = new URLSearchParams({
-                    voice: 'Brian',
+                    voice: 'Brian', // You can choose a different voice if needed
                     text: chunk
                 });
 
@@ -482,7 +458,7 @@ Remember to maintain consistency in tone, pacing, and character development thro
 
                 if (!response.ok) {
                     console.error('Error:', response.statusText);
-                    alert('An error occurred while speaking the story. Please try again.');
+                    alert('An error occurred while narrating the story. Please try again.');
                     return;
                 }
 
@@ -491,7 +467,6 @@ Remember to maintain consistency in tone, pacing, and character development thro
                 const audioElement = new Audio(audioUrl);
                 audioElement.play();
 
-                // Wait for the audio to finish playing before moving to the next chunk
                 await new Promise(resolve => audioElement.onended = resolve);
             }
         }
